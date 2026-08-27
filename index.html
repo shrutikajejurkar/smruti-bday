@@ -8,98 +8,97 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background-color: #d7c4b0;
-      background-image: radial-gradient(#c2ad96 1px, transparent 1px);
-      background-size: 20px 20px;
+      background-image: radial-gradient(#c2ad96 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
       font-family: 'Courier New', Courier, monospace;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding-top: 40px;
+      padding-top: 35px;
       overflow-x: hidden;
     }
 
-    .notice-banner {
-      background: #8b4513;
+    .https-note {
+      background: rgba(139, 69, 19, 0.85);
       color: #fff8dc;
-      padding: 8px 16px;
+      padding: 6px 14px;
       border-radius: 20px;
-      font-size: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      font-size: 11px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
-    /* Card Container */
-    .card-container {
-      perspective: 1500px;
+    .card-wrapper {
       position: relative;
-      margin-bottom: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    /* Closed Cover View */
+    /* Cover Styling */
     .card-cover {
-      width: 380px;
-      height: 520px;
+      width: 360px;
+      height: 500px;
       background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+      border-radius: 10px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
       cursor: pointer;
-      transition: transform 0.6s ease;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
       overflow: hidden;
-      position: relative;
-      border: 8px solid #fff;
+      border: 6px solid #ffffff;
+      transform-origin: center left;
+    }
+    .card-cover:hover {
+      transform: scale(1.02) rotate(-0.5deg);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.3);
     }
     .card-cover img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    .card-cover:hover {
-      transform: scale(1.02) rotate(-1deg);
-    }
 
-    /* Open Two-Page Spread */
+    /* Open Spread View */
     .card-spread {
       display: none;
-      width: 800px;
-      height: 540px;
-      background: #f4eae1;
-      border: 10px solid #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      width: 780px;
+      height: 520px;
+      background: #f7efe7;
+      border: 8px solid #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.3);
       position: relative;
       flex-direction: row;
     }
     .card-spread.open { display: flex; }
 
-    .page {
-      flex: 1;
-      height: 100%;
-      position: relative;
-      padding: 15px;
-      overflow: hidden;
-    }
-    .page-left {
-      border-right: 2px dashed #d0c0b0;
-    }
-
-    /* Back to Cover Button */
     .btn-back {
       position: absolute;
-      top: -45px;
+      top: -42px;
       left: 0;
       background: #6b4226;
       color: #fff;
       border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
+      padding: 6px 14px;
+      border-radius: 16px;
       cursor: pointer;
+      font-size: 12px;
       font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
-    /* Envelope & Letter Dynamics */
-    .envelope-wrapper {
+    .page {
+      flex: 1;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-left { border-right: 2px dashed #d5c4b3; }
+
+    /* Envelope & Interactive Letter */
+    .envelope-box {
       position: relative;
       width: 100%;
       height: 100%;
@@ -108,75 +107,72 @@
       align-items: center;
     }
     .envelope-img {
-      width: 90%;
+      width: 92%;
       position: absolute;
       z-index: 2;
       pointer-events: none;
     }
     .letter-img {
-      width: 70%;
+      width: 68%;
       position: absolute;
-      top: 25%;
+      top: 26%;
       z-index: 1;
       transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
       border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     .letter-img.popped {
-      top: 5%;
-      width: 85%;
+      top: 4%;
+      width: 86%;
       z-index: 10;
-      transform: scale(1.08);
-      box-shadow: 0 20px 30px rgba(0,0,0,0.35);
+      transform: scale(1.05);
+      box-shadow: 0 22px 35px rgba(0,0,0,0.4);
     }
 
-    /* Right Page: Cake & Candles */
-    .cake-wrapper {
+    /* Right Page: Cake & Animated Flames */
+    .cake-box {
       position: relative;
       width: 100%;
       height: 100%;
     }
-    .cake-base {
+    .cake-img {
       width: 100%;
       height: 100%;
       object-fit: contain;
     }
-    .flame {
+
+    /* Isolated Flames Container */
+    .flame-layer {
       position: absolute;
       width: 14px;
-      height: 24px;
-      background: radial-gradient(ellipse at bottom, #fff 0%, #ffdf00 40%, #ff4500 80%, transparent 100%);
+      height: 26px;
+      background: radial-gradient(ellipse at bottom, #ffffff 0%, #ffe600 45%, #ff4500 80%, transparent 100%);
       border-radius: 50% 50% 20% 20%;
-      filter: drop-shadow(0 0 6px #ff8c00);
-      animation: flicker 0.15s infinite alternate;
-      transition: transform 0.1s ease, opacity 0.4s ease;
+      filter: drop-shadow(0 0 7px #ff7700);
+      animation: candleFlicker 0.12s infinite alternate;
+      transition: transform 0.1s ease, opacity 0.5s ease;
     }
-    @keyframes flicker {
+    @keyframes candleFlicker {
       0% { transform: scale(1) rotate(-2deg); }
-      100% { transform: scale(1.1) rotate(2deg); opacity: 0.95; }
+      100% { transform: scale(1.12) rotate(2deg); opacity: 0.95; }
     }
-    .flame.bending {
-      transform: skewX(-25deg) scaleY(0.8);
-    }
-    .flame.extinguished {
-      opacity: 0 !important;
-      transform: scale(0) !important;
-    }
+    .flame-layer.bending { transform: skewX(-28deg) scaleY(0.75); }
+    .flame-layer.extinguished { opacity: 0 !important; transform: scale(0) !important; }
 
-    /* Mic Controls & Indicators */
-    .controls {
+    /* Controls & Meter */
+    .controls-panel {
       margin-top: 15px;
-      display: flex;
+      display: none;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
-    .meter-bar {
-      width: 200px;
-      height: 10px;
-      background: #ccc;
-      border-radius: 5px;
+    .meter-track {
+      width: 180px;
+      height: 8px;
+      background: #c5b5a4;
+      border-radius: 4px;
       overflow: hidden;
     }
     .meter-fill {
@@ -186,72 +182,67 @@
       transition: width 0.05s ease;
     }
     .blow-btn {
-      background: #d9534f;
+      background: #b83b3b;
       color: white;
       border: none;
-      padding: 10px 20px;
-      border-radius: 20px;
+      padding: 8px 18px;
+      border-radius: 18px;
       font-weight: bold;
+      font-size: 13px;
       cursor: pointer;
-      user-select: none;
     }
-    .wish-msg {
+    .wish-text {
       display: none;
-      font-size: 22px;
+      font-size: 20px;
       color: #8b0000;
       font-weight: bold;
-      text-shadow: 1px 1px #fff;
-      animation: pop 0.5s ease;
+      margin-top: 4px;
     }
   </style>
 </head>
 <body>
 
-  <div class="notice-banner">
-    📌 Note: Host over HTTPS for live microphone blowing. Use "Hold to Blow" fallback if running locally.
-  </div>
+  <div class="https-note">📌 HTTPS required for mic input. Use "Hold to Blow" fallback if tested locally.</div>
 
-  <div class="card-container">
-    <!-- Closed Cover View -->
+  <div class="card-wrapper">
+    <!-- Closed Cover -->
     <div class="card-cover" id="cardCover">
-      <!-- Image 1 Inserted via Base64/Relative URL -->
-      <img src="no 1.png" alt="Smruti Birthday Cover">
+      <img src="no 1.png" alt="Cover">
     </div>
 
-    <!-- Opened Two-Page Spread -->
+    <!-- Opened 2-Page Spread -->
     <div class="card-spread" id="cardSpread">
       <button class="btn-back" id="btnBack">← Back to Cover</button>
       
       <!-- Left Page: Envelope & Letter -->
       <div class="page page-left">
-        <div class="envelope-wrapper">
-          <!-- Letter Image (No. 3) tucked into Envelope (No. 2) -->
+        <div class="envelope-box">
           <img src="no 3.jpg" class="letter-img" id="letterImg" alt="Letter">
           <img src="no 2.png" class="envelope-img" alt="Envelope">
         </div>
       </div>
 
-      <!-- Right Page: Cake & Candles -->
+      <!-- Right Page: Cake & Candle Flames -->
       <div class="page page-right">
-        <div class="cake-wrapper">
-          <img src="no 4.jpg" class="cake-base" alt="Cake">
-          <!-- Positions mapped to wicks on image 4 -->
-          <div class="flame" style="top: 45.5%; left: 18.5%;"></div>
-          <div class="flame" style="top: 44.0%; left: 24.5%;"></div>
-          <div class="flame" style="top: 47.0%; left: 36.0%;"></div>
-          <div class="flame" style="top: 46.5%; left: 47.0%;"></div>
-          <div class="flame" style="top: 48.5%; left: 57.5%;"></div>
-          <div class="flame" style="top: 46.0%; left: 66.0%;"></div>
-          <div class="flame" style="top: 49.0%; left: 81.5%;"></div>
+        <div class="cake-box">
+          <img src="no 4.jpg" class="cake-img" alt="Cake">
+          <!-- Positioned directly over wicks on Image 4 -->
+          <div class="flame-layer" style="top: 46%; left: 18.5%;"></div>
+          <div class="flame-layer" style="top: 44.5%; left: 24.5%;"></div>
+          <div class="flame-layer" style="top: 47.5%; left: 36%;"></div>
+          <div class="flame-layer" style="top: 47%; left: 47%;"></div>
+          <div class="flame-layer" style="top: 49%; left: 57.5%;"></div>
+          <div class="flame-layer" style="top: 46.5%; left: 66%;"></div>
+          <div class="flame-layer" style="top: 49.5%; left: 81.5%;"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="controls" id="controls" style="display:none;">
-    <div class="meter-bar"><div class="meter-fill" id="meterFill"></div></div>
-    <button class="blow-btn" id="blowBtn">Hold to Blow 🌬️ (or Press Space)</button>
-    <div class="wish-msg" id="wishMsg">✨ Make a wish, Smruti! ✨</div>
+  <div class="controls-panel" id="controlsPanel">
+    <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
+    <button class="blow-btn" id="blowBtn">Hold to Blow 🌬️ (or Spacebar)</button>
+    <div class="wish-text" id="wishText">✨ Make a wish, Smruti! ✨</div>
   </div>
 
   <script>
@@ -259,13 +250,12 @@
     const spread = document.getElementById('cardSpread');
     const btnBack = document.getElementById('btnBack');
     const letter = document.getElementById('letterImg');
-    const controls = document.getElementById('controls');
-    const flames = document.querySelectorAll('.flame');
+    const controls = document.getElementById('controlsPanel');
+    const flames = document.querySelectorAll('.flame-layer');
     const meterFill = document.getElementById('meterFill');
     const blowBtn = document.getElementById('blowBtn');
-    const wishMsg = document.getElementById('wishMsg');
+    const wishText = document.getElementById('wishText');
 
-    // Open/Close Spread
     cover.addEventListener('click', () => {
       cover.style.display = 'none';
       spread.classList.add('open');
@@ -279,17 +269,15 @@
       controls.style.display = 'none';
     });
 
-    // Letter Pop interaction
     letter.addEventListener('click', (e) => {
       e.stopPropagation();
       letter.classList.toggle('popped');
     });
 
-    // Candle Blowing Logic
     let blowTimer = null;
     let blownOut = false;
 
-    function triggerBlow(isBlowing) {
+    function handleBlow(isBlowing) {
       if (blownOut) return;
       if (isBlowing) {
         flames.forEach(f => f.classList.add('bending'));
@@ -297,7 +285,7 @@
           blowTimer = setTimeout(() => {
             flames.forEach(f => f.classList.add('extinguished'));
             blownOut = true;
-            wishMsg.style.display = 'block';
+            wishText.style.display = 'block';
             flames.forEach(f => f.classList.remove('bending'));
           }, 500);
         }
@@ -308,47 +296,41 @@
       }
     }
 
-    // Manual Fallbacks (Button & Spacebar)
-    blowBtn.addEventListener('mousedown', () => triggerBlow(true));
-    blowBtn.addEventListener('mouseup', () => triggerBlow(false));
-    blowBtn.addEventListener('touchstart', (e) => { e.preventDefault(); triggerBlow(true); });
-    blowBtn.addEventListener('touchend', () => triggerBlow(false));
+    blowBtn.addEventListener('mousedown', () => handleBlow(true));
+    blowBtn.addEventListener('mouseup', () => handleBlow(false));
+    blowBtn.addEventListener('touchstart', (e) => { e.preventDefault(); handleBlow(true); });
+    blowBtn.addEventListener('touchend', () => handleBlow(false));
 
-    window.addEventListener('keydown', (e) => { if (e.code === 'Space') triggerBlow(true); });
-    window.addEventListener('keyup', (e) => { if (e.code === 'Space') triggerBlow(false); });
+    window.addEventListener('keydown', (e) => { if (e.code === 'Space') handleBlow(true); });
+    window.addEventListener('keyup', (e) => { if (e.code === 'Space') handleBlow(false); });
 
-    // Web Audio API Mic Detection
     async function initMic() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const analyser = audioContext.createAnalyser();
-        const microphone = audioContext.createMediaStreamSource(stream);
-        microphone.connect(analyser);
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const analyser = ctx.createAnalyser();
+        const mic = ctx.createMediaStreamSource(stream);
+        mic.connect(analyser);
         analyser.fftSize = 256;
-        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        const data = new Uint8Array(analyser.frequencyBinCount);
 
-        function checkVolume() {
-          analyser.getByteFrequencyData(dataArray);
+        function checkVol() {
+          analyser.getByteFrequencyData(data);
           let sum = 0;
-          for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
-          let average = sum / dataArray.length;
+          for (let i = 0; i < data.length; i++) sum += data[i];
+          let avg = sum / data.length;
           
-          let pct = Math.min(100, (average / 50) * 100);
-          meterFill.style.width = pct + '%';
-
-          if (average > 40) {
-            triggerBlow(true);
-          } else if (!blowBtn.matches(':active')) {
-            triggerBlow(false);
-          }
-          requestAnimationFrame(checkVolume);
+          meterFill.style.width = Math.min(100, (avg / 45) * 100) + '%';
+          if (avg > 35) handleBlow(true);
+          else if (!blowBtn.matches(':active')) handleBlow(false);
+          
+          requestAnimationFrame(checkVol);
         }
-        checkVolume();
+        checkVol();
       } catch (err) {
-        console.log("Mic access not available or blocked. Fallback button active.");
+        console.log("Mic inactive/blocked. Fallback active.");
       }
     }
   </script>
 </body>
-</html> 
+</html>
