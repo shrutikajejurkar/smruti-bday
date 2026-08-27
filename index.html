@@ -6,7 +6,7 @@
   <title>Happy Birthday Smruti!</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+
     body {
       background-color: #d7c4b0;
       background-image: radial-gradient(#c2ad96 1.5px, transparent 1.5px);
@@ -22,43 +22,26 @@
       overflow-x: hidden;
     }
 
-    .notice-banner {
-      background: rgba(139, 69, 19, 0.85);
-      color: #fff8dc;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 11px;
-      margin-bottom: 25px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-      text-align: center;
-    }
-
-    /* Card Main Container */
     .card-stage {
       position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
-      perspective: 1600px;
     }
 
-    /* Closed Cover View */
+    /* Cover Page (Centered, not touching top) */
     .card-cover {
       width: 380px;
       height: 530px;
-      background: #fff;
+      background: #ffffff;
       border-radius: 12px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.25);
       cursor: pointer;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
       overflow: hidden;
       border: 8px solid #ffffff;
-      transform-origin: center left;
+      transition: transform 0.3s ease;
     }
-    .card-cover:hover {
-      transform: scale(1.015) rotate(-0.5deg);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
+    .card-cover:hover { transform: scale(1.02); }
     .card-cover img {
       width: 100%;
       height: 100%;
@@ -66,7 +49,7 @@
       display: block;
     }
 
-    /* Opened 2-Page Spread */
+    /* 2-Page Spread View */
     .card-spread {
       display: none;
       width: 820px;
@@ -77,7 +60,6 @@
       box-shadow: 0 25px 50px rgba(0,0,0,0.3);
       position: relative;
       flex-direction: row;
-      transform-style: preserve-3d;
     }
     .card-spread.open { display: flex; }
 
@@ -93,11 +75,8 @@
       cursor: pointer;
       font-size: 12px;
       font-weight: bold;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-      transition: background 0.2s ease;
       z-index: 20;
     }
-    .btn-back:hover { background: #52311b; }
 
     .page {
       flex: 1;
@@ -107,7 +86,7 @@
     }
     .page-left { border-right: 2px dashed #d5c4b3; }
 
-    /* Left Page: Envelope & Interactive Letter */
+    /* Left Page: Envelope & Letter */
     .envelope-box {
       position: relative;
       width: 100%;
@@ -134,7 +113,6 @@
       border-radius: 4px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
-    /* Popped Letter State (Keeps margins around card) */
     .letter-img.popped {
       top: 5%;
       width: 82%;
@@ -143,7 +121,7 @@
       box-shadow: 0 20px 35px rgba(0,0,0,0.35);
     }
 
-    /* Right Page: Cake & Candle Flames */
+    /* Right Page: Cake & Flames */
     .cake-box {
       position: relative;
       width: 100%;
@@ -155,7 +133,6 @@
       object-fit: contain;
     }
 
-    /* Cutout Flame Elements (Styled from painted artwork) */
     .flame-cutout {
       position: absolute;
       width: 14px;
@@ -169,17 +146,12 @@
     }
     @keyframes flameFlicker {
       0% { transform: scale(1) rotate(-2deg); }
-      100% { transform: scale(1.1) rotate(2deg); opacity: 0.95; }
+      100% { transform: scale(1.1) rotate(2deg); }
     }
-    .flame-cutout.bending {
-      transform: skewX(-30deg) scaleY(0.75);
-    }
-    .flame-cutout.extinguished {
-      opacity: 0 !important;
-      transform: scale(0) !important;
-    }
+    .flame-cutout.bending { transform: skewX(-30deg) scaleY(0.75); }
+    .flame-cutout.extinguished { opacity: 0 !important; transform: scale(0) !important; }
 
-    /* Controls & Level Meter */
+    /* Controls */
     .controls-panel {
       margin-top: 20px;
       display: none;
@@ -187,40 +159,217 @@
       align-items: center;
       gap: 10px;
     }
-    .meter-container {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      color: #555;
-    }
-    .meter-track {
-      width: 180px;
-      height: 8px;
-      background: #c5b5a4;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .meter-fill {
-      height: 100%;
-      width: 0%;
-      background: #4caf50;
-      transition: width 0.05s ease;
-    }
-    .action-btns {
-      display: flex;
-      gap: 10px;
-    }
+    .meter-container { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #555; }
+    .meter-track { width: 180px; height: 8px; background: #c5b5a4; border-radius: 4px; overflow: hidden; }
+    .meter-fill { height: 100%; width: 0%; background: #4caf50; transition: width 0.05s ease; }
+    .action-btns { display: flex; gap: 10px; }
     .btn-action {
-      background: #b83b3b;
-      color: white;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 18px;
-      font-weight: bold;
-      font-size: 13px;
-      cursor: pointer;
-      user-select: none;
+      background: #b83b3b; color: white; border: none; padding: 8px 18px;
+      border-radius: 18px; font-weight: bold; font-size: 13px; cursor: pointer;
     }
-    .btn-relight {
-      background: #4a
+    .btn-relight { background: #4a7c59; display: none; }
+    .wish-text { display: none; font-size: 22px; color: #8b0000; font-weight: bold; margin-top: 5px; }
+
+    #confettiCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 100; }
+  </style>
+</head>
+<body>
+
+  <div class="card-stage">
+    <!-- Closed Cover -->
+    <div class="card-cover" id="cardCover">
+      <img src="no 1.png" alt="Cover Image">
+    </div>
+
+    <!-- 2-Page Spread -->
+    <div class="card-spread" id="cardSpread">
+      <button class="btn-back" id="btnBack">← Back to Cover</button>
+      
+      <!-- Left Page: Envelope & Letter -->
+      <div class="page page-left">
+        <div class="envelope-box">
+          <img src="no 3.jpg" class="letter-img" id="letterImg" alt="Letter">
+          <img src="no 2.png" class="envelope-img" alt="Envelope">
+        </div>
+      </div>
+
+      <!-- Right Page: Cake & Candle Flames -->
+      <div class="page page-right">
+        <div class="cake-box">
+          <img src="no 4.jpg" class="cake-img" alt="Cake">
+          <div class="flame-cutout" style="top: 45.5%; left: 18.5%;"></div>
+          <div class="flame-cutout" style="top: 44.0%; left: 24.5%;"></div>
+          <div class="flame-cutout" style="top: 47.0%; left: 36.0%;"></div>
+          <div class="flame-cutout" style="top: 46.5%; left: 47.0%;"></div>
+          <div class="flame-cutout" style="top: 48.5%; left: 57.5%;"></div>
+          <div class="flame-cutout" style="top: 46.0%; left: 66.0%;"></div>
+          <div class="flame-cutout" style="top: 49.0%; left: 81.5%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls-panel" id="controlsPanel">
+    <div class="meter-container">
+      <span>Mic Level:</span>
+      <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
+    </div>
+    <div class="action-btns">
+      <button class="btn-action" id="blowBtn">Hold to Blow 🌬️ (or Spacebar)</button>
+      <button class="btn-action btn-relight" id="relightBtn">Relight Candles 🕯️</button>
+    </div>
+    <div class="wish-text" id="wishText">✨ Make a wish, Smruti! ✨</div>
+  </div>
+
+  <canvas id="confettiCanvas"></canvas>
+
+  <script>
+    const cover = document.getElementById('cardCover');
+    const spread = document.getElementById('cardSpread');
+    const btnBack = document.getElementById('btnBack');
+    const letter = document.getElementById('letterImg');
+    const controls = document.getElementById('controlsPanel');
+    const flames = document.querySelectorAll('.flame-cutout');
+    const meterFill = document.getElementById('meterFill');
+    const blowBtn = document.getElementById('blowBtn');
+    const relightBtn = document.getElementById('relightBtn');
+    const wishText = document.getElementById('wishText');
+
+    cover.addEventListener('click', () => {
+      cover.style.display = 'none';
+      spread.classList.add('open');
+      controls.style.display = 'flex';
+      initMic();
+    });
+
+    btnBack.addEventListener('click', () => {
+      spread.classList.remove('open');
+      cover.style.display = 'block';
+      controls.style.display = 'none';
+      letter.classList.remove('popped');
+    });
+
+    letter.addEventListener('click', (e) => {
+      e.stopPropagation();
+      letter.classList.toggle('popped');
+    });
+
+    let blowTimer = null;
+    let blownOut = false;
+
+    function handleBlowState(isBlowing) {
+      if (blownOut) return;
+      if (isBlowing) {
+        flames.forEach(f => f.classList.add('bending'));
+        if (!blowTimer) {
+          blowTimer = setTimeout(() => {
+            flames.forEach(f => f.classList.add('extinguished'));
+            blownOut = true;
+            wishText.style.display = 'block';
+            relightBtn.style.display = 'inline-block';
+            blowBtn.style.display = 'none';
+            flames.forEach(f => f.classList.remove('bending'));
+            launchConfetti();
+          }, 500); // 0.5s blow duration
+        }
+      } else {
+        flames.forEach(f => f.classList.remove('bending'));
+        clearTimeout(blowTimer);
+        blowTimer = null;
+      }
+    }
+
+    relightBtn.addEventListener('click', () => {
+      blownOut = false;
+      flames.forEach(f => f.classList.remove('extinguished', 'bending'));
+      wishText.style.display = 'none';
+      relightBtn.style.display = 'none';
+      blowBtn.style.display = 'inline-block';
+    });
+
+    blowBtn.addEventListener('mousedown', () => handleBlowState(true));
+    blowBtn.addEventListener('mouseup', () => handleBlowState(false));
+    blowBtn.addEventListener('touchstart', (e) => { e.preventDefault(); handleBlowState(true); });
+    blowBtn.addEventListener('touchend', () => handleBlowState(false));
+
+    window.addEventListener('keydown', (e) => { if (e.code === 'Space') handleBlowState(true); });
+    window.addEventListener('keyup', (e) => { if (e.code === 'Space') handleBlowState(false); });
+
+    async function initMic() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const analyser = audioCtx.createAnalyser();
+        const mic = audioCtx.createMediaStreamSource(stream);
+        mic.connect(analyser);
+        analyser.fftSize = 256;
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+        function monitorMic() {
+          analyser.getByteFrequencyData(dataArray);
+          let sum = 0;
+          for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+          let avg = sum / dataArray.length;
+
+          let pct = Math.min(100, (avg / 40) * 100);
+          meterFill.style.width = pct + '%';
+
+          if (avg > 35) {
+            handleBlowState(true);
+          } else if (!blowBtn.matches(':active')) {
+            handleBlowState(false);
+          }
+          requestAnimationFrame(monitorMic);
+        }
+        monitorMic();
+      } catch (err) {
+        console.log("Mic access unavailable.");
+      }
+    }
+
+    function launchConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#ff4500', '#ffe600', '#4caf50', '#2196f3', '#e91e63'];
+
+      for (let i = 0; i < 70; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 0.7) * 12,
+          size: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          rotSpeed: (Math.random() - 0.5) * 10
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.25;
+          p.rotation += p.rotSpeed;
+          if (p.y < canvas.height) alive = true;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          ctx.restore();
+        });
+        if (alive) requestAnimationFrame(animate);
+      }
+      animate();
+    }
+  </script>
+</body>
+</html>
