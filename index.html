@@ -61,30 +61,51 @@
       100% { transform: translateY(-15px) rotate(4deg); }
     }
 
+    /* 3D Stage Container */
     .card-stage {
       position: relative;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
       z-index: 5;
       width: 100%;
       max-width: 820px;
+      perspective: 1200px;
     }
 
-    /* Closed Cover View */
+    /* Cover Wrap with Hint */
+    .cover-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+      transform-origin: left center;
+    }
+    .cover-wrapper.hide {
+      transform: rotateY(-110deg) scale(0.9);
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+    }
+
     .card-cover {
       width: 100%;
-      max-width: 380px;
-      height: 530px;
+      width: 340px;
+      height: 480px;
       background: #ffffff;
       border-radius: 12px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.25);
       cursor: pointer;
       overflow: hidden;
       border: 8px solid #ffffff;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .card-cover:hover { transform: scale(1.02); }
+    .card-cover:hover { 
+      transform: translateY(-4px) scale(1.02); 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
     .card-cover img {
       width: 100%;
       height: 100%;
@@ -92,7 +113,22 @@
       display: block;
     }
 
-    /* 2-Page Spread View */
+    .tap-hint {
+      font-size: 14px;
+      font-weight: bold;
+      color: #6b4226;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 6px 16px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      animation: pulseText 1.5s infinite alternate;
+    }
+    @keyframes pulseText {
+      0% { opacity: 0.75; transform: scale(0.98); }
+      100% { opacity: 1; transform: scale(1.03); }
+    }
+
+    /* Smooth 2-Page Spread View */
     .card-spread {
       display: none;
       width: 100%;
@@ -104,8 +140,15 @@
       box-shadow: 0 25px 50px rgba(0,0,0,0.3);
       position: relative;
       flex-direction: row;
+      opacity: 0;
+      transform: scale(0.92) rotateY(15deg);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .card-spread.open { display: flex; }
+    .card-spread.open { 
+      display: flex;
+      opacity: 1;
+      transform: scale(1) rotateY(0deg);
+    }
 
     .btn-back {
       position: absolute;
@@ -129,7 +172,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 10px;
+      padding: 15px;
     }
     .page-left { border-right: 2px dashed #d5c4b3; }
 
@@ -169,7 +212,7 @@
       box-shadow: 0 20px 35px rgba(0,0,0,0.35);
     }
 
-    /* Right Page: Cake Container & Flame Wrapper */
+    /* Right Page: Cake & Accurate Flames */
     .cake-box {
       position: relative;
       width: 100%;
@@ -183,11 +226,11 @@
       border-radius: 8px;
     }
 
-    /* Flame Cutouts */
+    /* Precision Flames */
     .flame-cutout {
       position: absolute;
-      width: 3.5%;
-      height: 6%;
+      width: 4%;
+      height: 7%;
       background: radial-gradient(ellipse at bottom, #ffffff 0%, #ffe600 40%, #ff4500 80%, transparent 100%);
       border-radius: 50% 50% 20% 20%;
       filter: drop-shadow(0 0 6px #ff7700);
@@ -203,7 +246,7 @@
     .flame-cutout.bending { transform: skewX(-30deg) scaleY(0.75); }
     .flame-cutout.extinguished { opacity: 0 !important; transform: scale(0) !important; }
 
-    /* Controls */
+    /* Controls & Notes */
     .controls-panel {
       margin-top: 15px;
       display: none;
@@ -211,6 +254,16 @@
       align-items: center;
       gap: 10px;
       z-index: 10;
+    }
+    .candle-note {
+      font-size: 13px;
+      font-weight: bold;
+      color: #6b4226;
+      background: #f7efe7;
+      padding: 6px 14px;
+      border-radius: 12px;
+      border: 1px solid #d5c4b3;
+      text-align: center;
     }
     .meter-container { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #555; }
     .meter-track { width: 160px; height: 8px; background: #c5b5a4; border-radius: 4px; overflow: hidden; }
@@ -224,7 +277,7 @@
     .btn-relight { background: #4a7c59; display: none; }
     .wish-text { display: none; font-size: 20px; color: #8b0000; font-weight: bold; margin-top: 5px; text-align: center; }
 
-    /* Mobile Responsive Layout Adjustments */
+    /* Mobile Adjustments */
     @media (max-width: 768px) {
       .card-spread {
         flex-direction: column;
@@ -237,7 +290,8 @@
         min-height: 380px;
       }
       .card-cover {
-        height: 480px;
+        width: 300px;
+        height: 440px;
       }
     }
 
@@ -256,9 +310,12 @@
   <div class="bg-title">🎉 Happy Birthday Smruti! 🎂</div>
 
   <div class="card-stage">
-    <!-- Closed Cover -->
-    <div class="card-cover" id="cardCover">
-      <img src="no 1.png" alt="Cover Image">
+    <!-- Closed Cover with Hint Below -->
+    <div class="cover-wrapper" id="coverWrapper">
+      <div class="card-cover" id="cardCover">
+        <img src="no 1.png" alt="Cover Image">
+      </div>
+      <div class="tap-hint">✨ Click / Tap card to open ✨</div>
     </div>
 
     <!-- 2-Page Spread -->
@@ -277,7 +334,7 @@
       <div class="page page-right">
         <div class="cake-box" id="cakeBox">
           <img src="no 4.jpg" class="cake-img" alt="Cake">
-          <!-- Responsive Candle Flame Positions -->
+          <!-- Precise Candle Flame Alignment -->
           <div class="flame-cutout" style="top: 45.5%; left: 18.5%;"></div>
           <div class="flame-cutout" style="top: 44.0%; left: 24.5%;"></div>
           <div class="flame-cutout" style="top: 47.0%; left: 36.0%;"></div>
@@ -291,6 +348,7 @@
   </div>
 
   <div class="controls-panel" id="controlsPanel">
+    <div class="candle-note" id="candleNote">🌬️ Blow into mic or tap candles to make a wish!</div>
     <div class="meter-container">
       <span>Blow Meter:</span>
       <div class="meter-track"><div class="meter-fill" id="meterFill"></div></div>
@@ -305,6 +363,7 @@
   <canvas id="confettiCanvas"></canvas>
 
   <script>
+    const coverWrapper = document.getElementById('coverWrapper');
     const cover = document.getElementById('cardCover');
     const spread = document.getElementById('cardSpread');
     const btnBack = document.getElementById('btnBack');
@@ -317,18 +376,28 @@
     const wishText = document.getElementById('wishText');
     const cakeBox = document.getElementById('cakeBox');
 
+    // Smooth Open Transition
     cover.addEventListener('click', () => {
-      cover.style.display = 'none';
-      spread.classList.add('open');
-      controls.style.display = 'flex';
-      initMic();
+      coverWrapper.classList.add('hide');
+      setTimeout(() => {
+        spread.style.display = 'flex';
+        // Force reflow for CSS animation trigger
+        void spread.offsetWidth; 
+        spread.classList.add('open');
+        controls.style.display = 'flex';
+        initMic();
+      }, 300);
     });
 
+    // Smooth Close Transition
     btnBack.addEventListener('click', () => {
       spread.classList.remove('open');
-      cover.style.display = 'block';
       controls.style.display = 'none';
       letter.classList.remove('popped');
+      setTimeout(() => {
+        spread.style.display = 'none';
+        coverWrapper.classList.remove('hide');
+      }, 500);
     });
 
     letter.addEventListener('click', (e) => {
@@ -382,7 +451,7 @@
     blowBtn.addEventListener('touchstart', (e) => { e.preventDefault(); handleBlowState(true); });
     blowBtn.addEventListener('touchend', () => handleBlowState(false));
 
-    // Instant tap fallback directly on flames or cake image
+    // Tap fallback directly on flames or cake image
     cakeBox.addEventListener('click', () => {
       if (!blownOut) extinguishCandles();
     });
@@ -390,7 +459,7 @@
     window.addEventListener('keydown', (e) => { if (e.code === 'Space') handleBlowState(true); });
     window.addEventListener('keyup', (e) => { if (e.code === 'Space') handleBlowState(false); });
 
-    // Mobile-friendly audio listener
+    // Audio mic monitor
     async function initMic() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -424,7 +493,7 @@
         }
         monitorMic();
       } catch (err) {
-        console.log("Mic access unavailable. Button/Tap fallback active.");
+        console.log("Mic access unavailable. Tap fallback active.");
       }
     }
 
