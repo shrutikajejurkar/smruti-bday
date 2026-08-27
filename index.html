@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Smruti!</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #d7c4b0;
+      background-image: radial-gradient(#c2ad96 1px, transparent 1px);
+      background-size: 20px 20px;
+      font-family: 'Courier New', Courier, monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 40px;
+      overflow-x: hidden;
+    }
+
+    .notice-banner {
+      background: #8b4513;
+      color: #fff8dc;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Card Container */
+    .card-container {
+      perspective: 1500px;
+      position: relative;
+      margin-bottom: 40px;
+    }
+
+    /* Closed Cover View */
+    .card-cover {
+      width: 380px;
+      height: 520px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+      cursor: pointer;
+      transition: transform 0.6s ease;
+      overflow: hidden;
+      position: relative;
+      border: 8px solid #fff;
+    }
+    .card-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .card-cover:hover {
+      transform: scale(1.02) rotate(-1deg);
+    }
+
+    /* Open Two-Page Spread */
+    .card-spread {
+      display: none;
+      width: 800px;
+      height: 540px;
+      background: #f4eae1;
+      border: 10px solid #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      position: relative;
+      flex-direction: row;
+    }
+    .card-spread.open { display: flex; }
+
+    .page {
+      flex: 1;
+      height: 100%;
+      position: relative;
+      padding: 15px;
+      overflow: hidden;
+    }
+    .page-left {
+      border-right: 2px dashed #d0c0b0;
+    }
+
+    /* Back to Cover Button */
+    .btn-back {
+      position: absolute;
+      top: -45px;
+      left: 0;
+      background: #6b4226;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Envelope & Letter Dynamics */
+    .envelope-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .envelope-img {
+      width: 90%;
+      position: absolute;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .letter-img {
+      width: 70%;
+      position: absolute;
+      top: 25%;
+      z-index: 1;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      border-radius: 4px;
+    }
+    .letter-img.popped {
+      top: 5%;
+      width: 85%;
+      z-index: 10;
+      transform: scale(1.08);
+      box-shadow: 0 20px 30px rgba(0,0,0,0.35);
+    }
+
+    /* Right Page: Cake & Candles */
+    .cake-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .cake-base {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .flame {
+      position: absolute;
+      width: 14px;
+      height: 24px;
+      background: radial-gradient(ellipse at bottom, #fff 0%, #ffdf00 40%, #ff4500 80%, transparent 100%);
+      border-radius: 50% 50% 20% 20%;
+      filter: drop-shadow(0 0 6px #ff8c00);
+      animation: flicker 0.15s infinite alternate;
+      transition: transform 0.1s ease, opacity 0.4s ease;
+    }
+    @keyframes flicker {
+      0% { transform: scale(1) rotate(-2deg); }
+      100% { transform: scale(1.1) rotate(2deg); opacity: 0.95; }
+    }
+    .flame.bending {
+      transform: skewX(-25deg) scaleY(0.8);
+    }
+    .flame.extinguished {
+      opacity: 0 !important;
+      transform: scale(0) !important;
+    }
+
+    /* Mic Controls & Indicators */
+    .controls {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .meter-bar {
+      width: 200px;
+      height: 10px;
+      background: #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .meter-fill {
+      height: 100%;
+      width: 0%;
+      background: #4caf50;
+      transition: width 0.05s ease;
+    }
+    .blow-btn {
+      background: #d9534f;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+    }
+    .wish-msg {
+      display: none;
+      font-size: 22px;
+      color: #8b0000;
+      font-weight: bold;
+      text-shadow: 1px 1px #fff;
+      animation: pop 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="notice-banner">
+    📌 Note: Host over HTTPS for live microphone blowing. Use "Hold to Blow" fallback if running locally.
+  </div>
+
+  <div class="card-container">
+    <!-- Closed Cover View -->
+    <div class="card-cover" id="cardCover">
+      <!-- Image 1 Inserted via Base64/Relative URL -->
+      <img src="no 1.png" alt="Smruti Birthday Cover">
+    </div>
+
+    <!-- Opened Two-Page Spread -->
+    <div class="card-spread" id="cardSpread">
+      <button class="btn-back" id="btnBack">← Back to Cover</button>
+      
+      <!-- Left Page: Envelope & Letter -->
+      <div class="page page-left">
+        <div class="envelope-wrapper">
+          <!-- Letter Image (No. 3) tucked into Envelope (No. 2) -->
+          <img src="no 3.jpg" class="letter-img" id="letterImg" alt="Letter">
+          <img src="no 2.png" class="envelope-img" alt="Envelope">
+        </div>
+      </div>
+
+      <!-- Right Page: Cake & Candles -->
+      <div class="page page-right">
+        <div class="cake-wrapper">
+          <img src="no 4.jpg" class="cake-base" alt="Cake">
+          <!-- Positions mapped to wicks on image 4 -->
+          <div class="flame" style="top: 45.5%; left: 18.5%;"></div>
+          <div class="flame" style="top: 44.0%; left: 24.5%;"></div>
+          <div class="flame" style="top: 47.0%; left: 36.0%;"></div>
+          <div class="flame" style="top: 46.5%; left: 47.0%;"></div>
+          <div class="flame" style="top: 48.5%; left: 57.5%;"></div>
+          <div class="flame" style="top: 46.0%; left: 66.0%;"></div>
+          <div class="flame" style="top: 49.0%; left: 81.5%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls" id="controls" style="display:none;">
+    <div class="meter-bar"><div class="meter-fill" id="meterFill"></div></div>
+    <button class="blow-btn" id="blowBtn">Hold to Blow 🌬️ (or Press Space)</button>
+    <div class="wish-msg" id="wishMsg">✨ Make a wish, Smruti! ✨</div>
+  </div>
+
+  <script>
+    const cover = document.getElementById('cardCover');
+    const spread = document.getElementById('cardSpread');
+    const btnBack = document.getElementById('btnBack');
+    const letter = document.getElementById('letterImg');
+    const controls = document.getElementById('controls');
+    const flames = document.querySelectorAll('.flame');
+    const meterFill = document.getElementById('meterFill');
+    const blowBtn = document.getElementById('blowBtn');
+    const wishMsg = document.getElementById('wishMsg');
+
+    // Open/Close Spread
+    cover.addEventListener('click', () => {
+      cover.style.display = 'none';
+      spread.classList.add('open');
+      controls.style.display = 'flex';
+      initMic();
+    });
+
+    btnBack.addEventListener('click', () => {
+      spread.classList.remove('open');
+      cover.style.display = 'block';
+      controls.style.display = 'none';
+    });
+
+    // Letter Pop interaction
+    letter.addEventListener('click', (e) => {
+      e.stopPropagation();
+      letter.classList.toggle('popped');
+    });
+
+    // Candle Blowing Logic
+    let blowTimer = null;
+    let blownOut = false;
+
+    function triggerBlow(isBlowing) {
+      if (blownOut) return;
+      if (isBlowing) {
+        flames.forEach(f => f.classList.add('bending'));
+        if (!blowTimer) {
+          blowTimer = setTimeout(() => {
+            flames.forEach(f => f.classList.add('extinguished'));
+            blownOut = true;
+            wishMsg.style.display = 'block';
+            flames.forEach(f => f.classList.remove('bending'));
+          }, 500);
+        }
+      } else {
+        flames.forEach(f => f.classList.remove('bending'));
+        clearTimeout(blowTimer);
+        blowTimer = null;
+      }
+    }
+
+    // Manual Fallbacks (Button & Spacebar)
+    blowBtn.addEventListener('mousedown', () => triggerBlow(true));
+    blowBtn.addEventListener('mouseup', () => triggerBlow(false));
+    blowBtn.addEventListener('touchstart', (e) => { e.preventDefault(); triggerBlow(true); });
+    blowBtn.addEventListener('touchend', () => triggerBlow(false));
+
+    window.addEventListener('keydown', (e) => { if (e.code === 'Space') triggerBlow(true); });
+    window.addEventListener('keyup', (e) => { if (e.code === 'Space') triggerBlow(false); });
+
+    // Web Audio API Mic Detection
+    async function initMic() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const analyser = audioContext.createAnalyser();
+        const microphone = audioContext.createMediaStreamSource(stream);
+        microphone.connect(analyser);
+        analyser.fftSize = 256;
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+        function checkVolume() {
+          analyser.getByteFrequencyData(dataArray);
+          let sum = 0;
+          for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+          let average = sum / dataArray.length;
+          
+          let pct = Math.min(100, (average / 50) * 100);
+          meterFill.style.width = pct + '%';
+
+          if (average > 40) {
+            triggerBlow(true);
+          } else if (!blowBtn.matches(':active')) {
+            triggerBlow(false);
+          }
+          requestAnimationFrame(checkVolume);
+        }
+        checkVolume();
+      } catch (err) {
+        console.log("Mic access not available or blocked. Fallback button active.");
+      }
+    }
+  </script>
+</body>
+</html>
